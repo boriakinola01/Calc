@@ -44,7 +44,6 @@ class CalcVC: UIViewController {
     }
     
     @IBAction func operationPressed(_ sender: UIButton) {
-        let operation = sender.titleLabel?.text!
         
         if inputMode {
             pushOperand()
@@ -53,9 +52,5 @@ class CalcVC: UIViewController {
             displayValue = calcModel.performOperation(operation) ?? 0
         }
     }
-    
-    
-    
-    
 }
 

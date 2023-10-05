@@ -8,7 +8,7 @@
 import Foundation
 
 struct CalcModel {
-    private var stack = [Double]()
+    private var stack = [Operation]()
     
     var supportedOperators: [String: Operation]
     
@@ -33,7 +33,7 @@ struct CalcModel {
         func newOperator(_ operation: Operation) {
             supportedOperators[operation.description] = operation
         }
-        
+        supportedOperators = [String: Operation]()
         newOperator(.binaryOperator("+", +))
         newOperator(.binaryOperator("×", *))
         newOperator(.binaryOperator("÷", {$1 / $0}))
@@ -42,51 +42,51 @@ struct CalcModel {
     }
     
     mutating func pushOperand(_ operandValue: Double) -> Double? {
-        stack.append(operandValue)
-        return stack.last
+        stack.append(Operation.operand(operandValue))
+        return evaluateStack()
     }
     
     private mutating func evaluateStack() -> Double? {
+        func evaluateStack(_ stack: [Operation]) -> (result: Double?, leftOverStack: [Operation]) {
+            if !stack.isEmpty {
+                var leftOverStack = stack
+                let operation = leftOverStack.removeLast()
+                switch operation {
+                case .operand(let operand):
+                    return (operand, leftOverStack)
+                case .binaryOperator(_, let operation):
+                    let firstEval = evaluateStack(leftOverStack)
+                    if let firstEvalResult = firstEval.result {
+                        let secondEval = evaluateStack(firstEval.leftOverStack)
+                        if let secondEvalResult = secondEval.result {
+                            return (operation(firstEvalResult, secondEvalResult), secondEval.leftOverStack)
+                        }
+                    }
+                default:
+                    break
+                }
+            }
+            return (nil, stack)
+        }
         
         let (result, leftOverStack) = evaluateStack(stack)
-    }
-    private mutating func evaluateStack(_ operation: (Double, Double) -> Double) -> Double? {
-        if stack.count >= 2 {
-            _ = pushOperand(operation(stack.removeLast(), stack.removeLast()))
-        }
-        return stack.last
-    }
-    
-    private mutating func evaluateStack(_ operation: (Double) -> Double) -> Double? {
-        if stack.count >= 1 {
-            _ = pushOperand(operation(stack.removeLast()))
+        if let evaluation = result {
+            print("\(stack) = \(evaluation) with \(leftOverStack) left over")
         }
         
-        return stack.last
+        return result
     }
     
     private func multiply(_ op1: Double,_ op2: Double) -> Double {
         return op1 * op2
     }
     
-    mutating func performOperation(_ operation: String) -> Double?{
-        var result: Double?
-        switch operation {
-        case "+":
-            result = evaluateStack(+)
-        case "÷":
-            result = evaluateStack({(op1: Double, op2: Double) -> Double in return op2/op1})
-        case "−":
-            result = evaluateStack({$1 - $0})
-        case "±":
-            result = evaluateStack({-$0})
-        case "×":
-            result = evaluateStack(multiply)
-        default:
-            break
+    mutating func performOperation(_ symbol: String) -> Double?{
+        if let operation = supportedOperators[symbol] {
+            stack.append(operation)
         }
         
-        return result
+        return evaluateStack()
     }
 }
 
