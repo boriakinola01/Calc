@@ -13,6 +13,7 @@
 		911F95F12AB861E40046467E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 911F95EF2AB861E40046467E /* Main.storyboard */; };
 		911F95F32AB861EB0046467E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 911F95F22AB861EB0046467E /* Assets.xcassets */; };
 		911F95F62AB861EB0046467E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 911F95F42AB861EB0046467E /* LaunchScreen.storyboard */; };
+		914F9E262ACF03060003CEE6 /* CalcModel.Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 914F9E252ACF03060003CEE6 /* CalcModel.Operation.swift */; };
 		91DF10822ABF8F3200F8FC80 /* CalcModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DF10812ABF8F3200F8FC80 /* CalcModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -25,6 +26,7 @@
 		911F95F22AB861EB0046467E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		911F95F52AB861EB0046467E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		911F95F72AB861EB0046467E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		914F9E252ACF03060003CEE6 /* CalcModel.Operation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcModel.Operation.swift; sourceTree = "<group>"; };
 		91DF10812ABF8F3200F8FC80 /* CalcModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -66,6 +68,7 @@
 				911F95F22AB861EB0046467E /* Assets.xcassets */,
 				911F95F42AB861EB0046467E /* LaunchScreen.storyboard */,
 				911F95F72AB861EB0046467E /* Info.plist */,
+				914F9E252ACF03060003CEE6 /* CalcModel.Operation.swift */,
 			);
 			path = Calc;
 			sourceTree = "<group>";
@@ -144,6 +147,7 @@
 				911F95EE2AB861E40046467E /* CalcVC.swift in Sources */,
 				911F95EA2AB861E40046467E /* AppDelegate.swift in Sources */,
 				91DF10822ABF8F3200F8FC80 /* CalcModel.swift in Sources */,
+				914F9E262ACF03060003CEE6 /* CalcModel.Operation.swift in Sources */,
 				911F95EC2AB861E40046467E /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

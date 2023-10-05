@@ -9,31 +9,34 @@ import Foundation
 
 struct CalcModel {
     private var stack = [Operation]()
+    typealias PropertyList = Any
     
-    var supportedOperators: [String: Operation]
-    
-    enum Operation: CustomStringConvertible {
-        var description: String {
-            switch self {
-            case .operand(let value):
-                return "\(value)"
-            case .binaryOperator(let symbol, _):
-                fallthrough
-            case .unaryOperator(let symbol, _):
-                return symbol
+    var session: PropertyList {
+        get {
+            return stack.map{ $0.description } as CalcModel.PropertyList
+        }
+        set {
+            if let operations = newValue as? [String] {
+                var newStack = [Operation]()
+                
+                for operation in operations {
+                    if let knownOperation = Operation.supportedOperators[operation] {
+                        newStack.append(knownOperation)
+                    } else if let operand = Double(operation) {
+                        newStack.append(.operand(operand))
+                    }
+                }
+                stack = newStack
             }
         }
-        
-        case operand(Double)
-        case unaryOperator(String, (Double) -> Double)
-        case binaryOperator(String, (Double, Double) -> Double)
     }
     
     init() {
+        var operators = [String: Operation]()
         func newOperator(_ operation: Operation) {
-            supportedOperators[operation.description] = operation
+            operators[operation.description] = operation
         }
-        supportedOperators = [String: Operation]()
+    
         newOperator(.binaryOperator("+", +))
         newOperator(.binaryOperator("×", *))
         newOperator(.binaryOperator("÷", {$1 / $0}))
@@ -46,7 +49,7 @@ struct CalcModel {
         return evaluateStack()
     }
     
-    private mutating func evaluateStack() -> Double? {
+    mutating func evaluateStack() -> Double? {
         func evaluateStack(_ stack: [Operation]) -> (result: Double?, leftOverStack: [Operation]) {
             if !stack.isEmpty {
                 var leftOverStack = stack
@@ -82,7 +85,7 @@ struct CalcModel {
     }
     
     mutating func performOperation(_ symbol: String) -> Double?{
-        if let operation = supportedOperators[symbol] {
+        if let operation = Operation.supportedOperators[symbol] {
             stack.append(operation)
         }
         

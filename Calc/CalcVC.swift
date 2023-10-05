@@ -20,12 +20,27 @@ class CalcVC: UIViewController {
         set {
             calcDisplay.text = "\(newValue)"
             inputMode = false
+            let defaults = UserDefaults.standard
+            defaults.setValue(calcModel.session, forKey: "calcModel.session")
+            defaults.synchronize()
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        let defaults = UserDefaults.standard
+        if let session = defaults.object(forKey: "calcModel.session") {
+            calcModel.session = session
+            if let result = calcModel.evaluateStack() {
+                displayValue = result
+            }
+        }
     }
     
     @IBAction func digitPresed(_ sender: UIButton) {
