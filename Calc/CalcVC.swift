@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class CalcVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
