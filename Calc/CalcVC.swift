@@ -17,8 +17,10 @@ class CalcVC: UIViewController {
         get {
             return Double(calcDisplay.text!)!
         }
-        set { calcDisplay.text = "\(newValue)"
-            inputMode = false}
+        set {
+            calcDisplay.text = "\(newValue)"
+            inputMode = false
+        }
     }
     
     override func viewDidLoad() {
@@ -27,8 +29,7 @@ class CalcVC: UIViewController {
     }
     
     @IBAction func digitPresed(_ sender: UIButton) {
-        if let digit = sender.currentTitle {
-            print("digit pressed = \(digit)")
+        if let digit = sender.titleLabel?.text {
             if inputMode {
                 calcDisplay.text = calcDisplay.text! + digit
             } else {
