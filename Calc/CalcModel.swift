@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CalcModel {
+struct CalcModel: Codable {
     private var stack = [Operation]()
     typealias PropertyList = Any
     
@@ -42,6 +42,21 @@ struct CalcModel {
         newOperator(.binaryOperator("÷", {$1 / $0}))
         newOperator(.binaryOperator("-", {$1 - $0}))
         newOperator(.unaryOperator("±", -))
+        Operation.supportedOperators = operators
+    }
+    
+    func json() throws -> Data {
+        return try JSONEncoder().encode(self)
+    }
+    
+    init(json data: Data) throws {
+        self.init()
+        self = try JSONDecoder().decode(CalcModel.self, from: data)
+    }
+    
+    init(url: URL) throws {
+        let data = try Data(contentsOf: url)
+        self = try CalcModel(json: data)
     }
     
     mutating func pushOperand(_ operandValue: Double) -> Double? {
